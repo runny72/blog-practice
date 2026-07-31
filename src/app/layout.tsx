@@ -27,7 +27,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <nav style={{ padding: '10px', background: '#eee' }}>
+        <a href="/" style={{ marginRight: '10px' }}>홈</a>
+        <a href="/about" style={{ marginRight: '10px' }}>소개</a>
+        <a href="/blog">블로그</a>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
