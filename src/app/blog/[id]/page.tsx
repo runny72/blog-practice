@@ -4,6 +4,20 @@ import postsData from '../../../data/posts.json';
 
 const posts: Post[] = postsData;
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const post = posts.find((p) => p.id === Number(id));
+
+  return {
+    title: post ? post.title : '글을 찾을 수 없습니다',
+    description: post ? post.content.slice(0, 100) : '',
+  };
+}
+
 export default async function PostDetailPage({
   params,
 }: {

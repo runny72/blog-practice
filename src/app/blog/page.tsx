@@ -3,6 +3,11 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import postsData from '../../data/posts.json';
 import Link from 'next/link';
 
+export const metadata = {
+  title: '블로그',
+  description: '알고리즘 트레이딩 관련 글 모음',
+};
+
 const posts: Post[] = postsData;
 
 export default function BlogPage() {
