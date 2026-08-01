@@ -1,21 +1,9 @@
 import LikeButton from '../components/LikeButton';
 import { Post } from '../../types/post';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import postsData from '../../data/posts.json';
 
-const posts: Post[] = [
-  {
-    id: 1,
-    title: 'KOSPI200 자동매매 시스템 구축기',
-    content: 'LS증권 API를 활용한 선물 자동매매...',
-    date: '2026-07-01',
-  },
-  {
-    id: 2,
-    title: '변동성 기반 포지션 사이징',
-    content: 'ATR을 활용한 자금관리 전략...',
-    date: '2026-07-15',
-  },
-];
+const posts: Post[] = postsData;
 
 export default function BlogPage() {
   return (
