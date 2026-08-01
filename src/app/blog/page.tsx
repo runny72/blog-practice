@@ -1,10 +1,35 @@
 import LikeButton from '../components/LikeButton';
+import { Post } from '../../types/post';
+
+const posts: Post[] = [
+  {
+    id: 1,
+    title: 'KOSPI200 자동매매 시스템 구축기',
+    content: 'LS증권 API를 활용한 선물 자동매매...',
+    date: '2026-07-01',
+  },
+  {
+    id: 2,
+    title: '변동성 기반 포지션 사이징',
+    content: 'ATR을 활용한 자금관리 전략...',
+    date: '2026-07-15',
+  },
+];
 
 export default function BlogPage() {
   return (
-    <div>
-      <h1>블로그</h1>
-      <p>글 목록이 여기 들어갈 예정입니다.</p>
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">블로그</h1>
+      {posts.map((post) => (
+        <div
+          key={post.id}
+          className="mb-4 p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition"
+        >
+          <h2 className="text-xl font-semibold">{post.title}</h2>
+          <p className="text-sm text-gray-400 mb-2">{post.date}</p>
+          <p className="text-gray-700">{post.content}</p>
+        </div>
+      ))}
       <LikeButton />
     </div>
   );
