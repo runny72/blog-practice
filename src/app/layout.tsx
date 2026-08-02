@@ -37,8 +37,10 @@ export default async function RootLayout({
           <a href="/" style={{ marginRight: '10px' }}>홈</a>
           <a href="/about" style={{ marginRight: '10px' }}>소개</a>
           <a href="/blog" style={{ marginRight: '10px' }}>블로그</a>
+          <a href="/contact" style={{ marginRight: '10px' }}>문의하기</a>
           {user ? (
             <>
+              <a href="/dashboard" style={{ marginRight: '10px' }}>대시보드</a>
               <span style={{ marginRight: '10px' }}>{user.email}님</span>
               <LogoutButton />
             </>
