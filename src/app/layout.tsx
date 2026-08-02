@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import LogoutButton from './components/LogoutButton';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +30,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <nav style={{ padding: '10px', background: '#eee' }}>
-        <a href="/" style={{ marginRight: '10px' }}>홈</a>
-        <a href="/about" style={{ marginRight: '10px' }}>소개</a>
-        <a href="/blog">블로그</a>
+          <a href="/" style={{ marginRight: '10px' }}>홈</a>
+          <a href="/about" style={{ marginRight: '10px' }}>소개</a>
+          <a href="/blog" style={{ marginRight: '10px' }}>블로그</a>
+          <a href="/login" style={{ marginRight: '10px' }}>로그인</a>
+          <a href="/signup" style={{ marginRight: '10px' }}>회원가입</a>
+          <LogoutButton />
         </nav>
         {children}
       </body>
