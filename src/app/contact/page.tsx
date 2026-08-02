@@ -1,13 +1,17 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 
-interface ContactFormData {
-  name: string;
-  email: string;
-  message: string;
-}
+const contactSchema = z.object({
+  name: z.string().min(2, '이름은 2자 이상이어야 합니다'),
+  email: z.string().email('올바른 이메일 형식이 아닙니다'),
+  message: z.string().min(10, '문의 내용은 10자 이상 작성해주세요'),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function ContactPage() {
   const {
@@ -15,7 +19,9 @@ export default function ContactPage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ContactFormData>();
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
 
   const onSubmit = (data: ContactFormData) => {
     console.log('제출된 데이터:', data);
@@ -30,29 +36,29 @@ export default function ContactPage() {
         <div>
           <input
             placeholder="이름"
-            {...register('name', { required: true })}
+            {...register('name')}
             className="border rounded p-2 w-full"
           />
-          {errors.name && <p className="text-red-500 text-sm">이름을 입력해주세요</p>}
+          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
         </div>
 
         <div>
           <input
             placeholder="이메일"
-            {...register('email', { required: true })}
+            {...register('email')}
             className="border rounded p-2 w-full"
           />
-          {errors.email && <p className="text-red-500 text-sm">이메일을 입력해주세요</p>}
+          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
         </div>
 
         <div>
           <textarea
             placeholder="문의 내용"
-            {...register('message', { required: true })}
+            {...register('message')}
             className="border rounded p-2 w-full"
             rows={5}
           />
-          {errors.message && <p className="text-red-500 text-sm">내용을 입력해주세요</p>}
+          {errors.message && <p className="text-red-500 text-sm">{errors.message.message}</p>}
         </div>
 
         <Button type="submit">제출</Button>
