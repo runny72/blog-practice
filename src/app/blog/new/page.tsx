@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 export default function NewPostPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
   const router = useRouter();
 
@@ -16,15 +17,33 @@ export default function NewPostPage() {
     const supabase = createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
       setMessage('로그인이 필요합니다.');
       return;
     }
 
+    let imageUrl: string | null = null;
+
+    if (imageFile) {
+      const fileName = `${user.id}/${Date.now()}-${imageFile.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from('post-images')
+        .upload(fileName, imageFile);
+
+      if (uploadError) {
+        setMessage(`이미지 업로드 실패: ${uploadError.message}`);
+        return;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('post-images')
+        .getPublicUrl(fileName);
+      imageUrl = urlData.publicUrl;
+    }
+
     const { data, error } = await supabase
       .from('posts')
-      .insert({ title, content, user_id: user.id })
+      .insert({ title, content, user_id: user.id, image_url: imageUrl })
       .select()
       .single();
 
@@ -53,6 +72,11 @@ export default function NewPostPage() {
           className="border rounded p-2"
           rows={8}
           required
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
         />
         <Button type="submit">작성하기</Button>
       </form>

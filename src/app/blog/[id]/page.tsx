@@ -39,6 +39,9 @@ export default async function PostDetailPage({
       <p className="text-sm text-gray-400 mb-4">
         {new Date(post.created_at).toLocaleDateString('ko-KR')}
       </p>
+      {post.image_url && (
+      <img src={post.image_url} alt={post.title} className="w-full rounded-lg mb-4" />
+)}
       <p className="text-gray-700 mb-6">{post.content}</p>
       <LikeButton />
       {isAuthor && <PostActions postId={post.id} />}
