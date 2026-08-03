@@ -1,4 +1,5 @@
 import LikeButton from '../../components/LikeButton';
+import PostActions from '../../components/PostActions';
 import { createServerSupabaseClient } from '../../../lib/supabase-server';
 
 export async function generateMetadata({
@@ -24,10 +25,13 @@ export default async function PostDetailPage({
   const { id } = await params;
   const supabase = await createServerSupabaseClient();
   const { data: post } = await supabase.from('posts').select('*').eq('id', id).single();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!post) {
     return <div className="p-6">글을 찾을 수 없습니다.</div>;
   }
+
+  const isAuthor = user && user.id === post.user_id;
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -37,6 +41,7 @@ export default async function PostDetailPage({
       </p>
       <p className="text-gray-700 mb-6">{post.content}</p>
       <LikeButton />
+      {isAuthor && <PostActions postId={post.id} />}
     </div>
   );
 }

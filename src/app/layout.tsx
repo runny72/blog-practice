@@ -40,6 +40,7 @@ export default async function RootLayout({
           <a href="/contact" style={{ marginRight: '10px' }}>문의하기</a>
           {user ? (
             <>
+              <a href="/blog/new" style={{ marginRight: '10px' }}>글쓰기</a>
               <a href="/dashboard" style={{ marginRight: '10px' }}>대시보드</a>
               <span style={{ marginRight: '10px' }}>{user.email}님</span>
               <LogoutButton />
