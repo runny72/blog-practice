@@ -13,9 +13,13 @@ export async function createServerSupabaseClient() {
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // Server Component에서 호출되면 쿠키 쓰기가 무시됨 — 미들웨어로 세션 갱신하는 경우 정상 동작이라 무시해도 됨
+          }
         },
       },
     }
