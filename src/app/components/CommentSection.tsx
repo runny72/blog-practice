@@ -29,6 +29,22 @@ export default function CommentSection({ postId }: { postId: number }) {
 
   useEffect(() => {
     fetchComments();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel(`comments-${postId}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` },
+        (payload) => {
+          setComments((prev) => [...prev, payload.new as Comment]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [postId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,9 +61,11 @@ export default function CommentSection({ postId }: { postId: number }) {
       .from('comments')
       .insert({ content: newComment, post_id: postId, user_id: user.id });
 
-    if (!error) {
+    if (error) {
+      alert(`댓글 등록 실패: ${error.message}`);
+    } else {
       setNewComment('');
-      fetchComments();
+      // fetchComments() 호출 필요 없음 — Realtime이 자동으로 반영해줌
     }
   };
 
